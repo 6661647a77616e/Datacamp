@@ -40,3 +40,45 @@ documents = [nlp(t) for t in texts]
 # Print each token's text, dependency label and its explanation
 for doc in documents:
     print([(token.text, token.dep_, spacy.explain(token.dep_)) for token in doc], "\n")
+
+#--------------------------------------
+# Introduction to Word Vector
+
+
+import spacy
+nlp = spacy.load("en_core_web_md")
+print(nlp.meta["vectors"])
+
+#World vectors In Spacy
+import spacy
+nlp = spacy.load("en_core_web_md")
+like_id = nlp.vocab.strings["like"]
+print(like_id)
+print(nlp.vocab.vectors[like_id])
+
+--------------------------------------------
+#\\  spaCy vocabulary
+# Load the en_core_web_md model
+md_nlp = spacy.load("en_core_web_md")
+
+# Print the number of words in the model's vocabulary
+print("Number of words: ", md_nlp.meta["vectors"]["vectors"], "\n")
+
+# Print the dimensions of word vectors in en_core_web_md model
+print("Dimension of word vectors: ", md_nlp.meta["vectors"]["width"])
+
+---------------------------------------
+# word vectorss in spacy vocabulary
+words = ["like", "love"]
+
+# IDs of all the given words
+ids = [nlp.vocab.strings[w] for w in words]
+
+# Store the first ten elements of the word vectors for each word
+word_vectors = [nlp.vocab.vectors[i][:10] for i in ids]
+
+# Print the first ten elements of the first word vector
+print(word_vectors[0])
+
+
+
