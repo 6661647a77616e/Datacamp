@@ -80,5 +80,73 @@ word_vectors = [nlp.vocab.vectors[i][:10] for i in ids]
 # Print the first ten elements of the first word vector
 print(word_vectors[0])
 
+-------------------------------------------
+#\  Word Vector Projection
+
+words = ["tiger", "bird"]
+
+# Extract word IDs of given words
+word_ids = [nlp.vocab.strings[w] for w in words]
+
+# Extract word vectors and stack the first five elements vertically
+word_vectors = np.vstack([nlp.vocab.vectors[i][:5] for i in word_ids])
+
+# Calculate the transformed word vectors using the pca object # Project into 2D space
+pca = PCA(n_components=2)
+word_vectors_transformed = pca.fit_transform(word_vectors)
+
+# Print the first component of the transformed word vectors
+print(word_vectors_transformed[:, 0])
+
+------------------------------------------
+#Similar words in vocabulary
+
+# Find the most similar word to the word computer
+most_similar_words = nlp.vocab.vectors.most_similar(np.asarray([word_vector]), n = 1)
+
+# Find the list of similar words given the word IDs
+words = [nlp.vocab.strings[w] for w in most_similar_words[0][0]]
+print(words)
+
+--------------------------------------------
+
+#// Doc similarity with spaCy
+# Create a documents list containing Doc containers
+documents = [nlp(t) for t in texts]
+
+# Create a Doc container of the category
+category = "canned dog food"
+category_document = nlp(category)
+
+# Print similarity scores of each Doc container and the category_document
+for i, doc in enumerate(documents):
+  print(f"Semantic similarity with document {i+1}:", round(doc.similarity(category_document), 3))
+
+----------------------------------------------------
+
+#Span similarity with spaCy
+# Create a Doc container for the category
+category = "canned dog food"
+category_document = nlp(category)
+
+# Print similarity score of a given Span and category_document
+document_span = document[0:3]
+print(f"Semantic similarity with", document_span.text, ":", round(document_span.similarity(category_document), 3))
+
+--------------------------------------------------------
+
+#Semantic similarity for categorizig texts
+# Populate Doc containers for the word "sauce" and for "texts" string
+key = nlp("sauce")
+sentences = nlp(texts)
+
+# Calculate similarity score of each sentence and a Doc container for the word sauce
+semantic_scores = []
+for sent in sentences.sents:
+	semantic_scores.append({"score": round(sent.similarity(key), 2)})
+print(semantic_scores)
+
+
+
 
 
